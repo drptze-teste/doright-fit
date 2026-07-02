@@ -1,0 +1,130 @@
+---
+layout: default
+---
+<style>
+  .post-hero{
+    padding:clamp(40px,6vw,72px) 0 clamp(28px,4vw,44px);
+    background:
+      radial-gradient(120% 90% at 88% -10%,rgba(79,142,247,.16),transparent 60%),
+      radial-gradient(90% 70% at -10% 110%,rgba(45,109,224,.10),transparent 55%),
+      var(--black);
+  }
+  .post-kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent-bright);margin-bottom:14px;
+  }
+  .post-kicker::before{content:"";width:26px;height:1.5px;background:var(--accent)}
+  .post-title{font-size:clamp(28px,5vw,52px);margin-bottom:16px;max-width:24ch;color:var(--white)}
+  .post-title em{font-style:italic;color:var(--accent-bright)}
+  .post-meta{font-size:14px;color:var(--off-white)}
+  .post-meta time{font-weight:500;color:var(--white)}
+  .post-views{display:inline-flex;align-items:center;gap:4px;color:var(--accent-bright);font-size:13px;font-weight:500}
+
+  .post-cover{
+    width:100%;max-height:480px;object-fit:cover;
+    border-radius:16px;margin:32px 0;
+    border:1px solid var(--border);
+    box-shadow:0 18px 50px -12px rgba(0,0,0,.6);
+  }
+
+  .post-body{max-width:68ch;margin:0 auto;padding:40px 0 80px}
+  .post-body h2{font-size:clamp(22px,3vw,30px);margin:2em 0 .6em;color:var(--white)}
+  .post-body h3{font-size:clamp(18px,2.4vw,24px);margin:1.8em 0 .5em;color:var(--accent-bright)}
+  .post-body p{margin-bottom:1.4em;font-size:clamp(15px,1.8vw,17px);color:var(--off-white);line-height:1.8}
+  .post-body ul,.post-body ol{margin:0 0 1.4em 1.4em;font-size:clamp(15px,1.8vw,17px);color:var(--off-white);line-height:1.8}
+  .post-body li{margin-bottom:.5em}
+  .post-body strong{color:var(--white);font-weight:700}
+  .post-body em{color:var(--accent-bright)}
+  .post-body blockquote{
+    border-left:3px solid var(--accent);
+    padding:14px 22px;margin:2em 0;
+    background:var(--card);border-radius:0 10px 10px 0;
+    font-family:'DM Serif Display',serif;font-size:1.08em;color:var(--white);
+  }
+  .post-body img{width:100%;border-radius:12px;margin:1.6em 0;border:1px solid var(--border)}
+  .post-body a{color:var(--accent-bright);text-decoration:underline;text-underline-offset:3px}
+  .post-body hr{border:none;border-top:1px solid var(--border);margin:2.5em 0}
+
+  .back-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:500;color:var(--accent-bright);margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--accent)}
+  .back-link::before{content:"←"}
+
+  .post-cta{
+    max-width:68ch;margin:0 auto 80px;
+    background:linear-gradient(135deg,var(--card),var(--dark));
+    border:1px solid var(--border);border-radius:18px;
+    padding:38px;text-align:center;
+    box-shadow:0 18px 50px -18px rgba(79,142,247,.4);
+  }
+  .post-cta h3{font-family:'DM Serif Display',serif;font-size:clamp(20px,3vw,28px);color:#fff;margin-bottom:10px}
+  .post-cta p{color:var(--off-white);font-size:15px;margin-bottom:6px;line-height:1.6}
+  .post-cta-btn{
+    display:inline-block;margin-top:20px;
+    background:var(--accent);color:#fff;font-weight:700;font-size:15px;
+    padding:14px 30px;border-radius:12px;transition:background .15s ease;
+  }
+  .post-cta-btn:hover{background:var(--accent-dim)}
+  .post-cta-links{
+    margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
+    font-size:14px;color:var(--gray);
+  }
+  .post-cta-links a{color:var(--off-white);font-weight:500;text-decoration:none}
+  .post-cta-links a:hover{color:var(--accent-bright);text-decoration:underline}
+</style>
+
+<section class="post-hero">
+  <div class="wrap">
+    <a href="{{ site.baseurl }}/blog/" class="back-link">Voltar ao Blog</a>
+    <p class="post-kicker">Do Right Blog</p>
+    <h1 class="post-title">{{ page.title }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d de %B de %Y" }}</time>
+      {% if page.author %} · {{ page.author }}{% endif %}
+      <span class="post-views" id="post-views" style="display:none"> · 👁️ <span id="view-count">—</span></span>
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  {% if page.cover %}
+  {% if page.cover contains '://' %}{% assign cover_url = page.cover %}{% else %}{% assign cover_url = page.cover | relative_url %}{% endif %}
+  <img src="{{ cover_url }}" alt="{{ page.title }}" class="post-cover" />
+  {% endif %}
+
+  <article class="post-body">
+    {{ content }}
+  </article>
+
+  <aside class="post-cta">
+    <h3>Do Right — Treino Online</h3>
+    <p>Personal trainer brasileiro para quem mora fora. Acompanhamento à distância, em português e inglês.</p>
+    <p style="color:var(--gray);font-size:14px">Onde você estiver no mundo.</p>
+    <a href="{{ site.baseurl }}/" class="post-cta-btn">Quero treinar com a Do Right →</a>
+    <p class="post-cta-links">
+      <a href="{{ site.baseurl }}/">Site oficial</a> ·
+      <a href="https://www.instagram.com/doright.fit" target="_blank" rel="noopener">Instagram @doright.fit</a>
+    </p>
+  </aside>
+</div>
+
+<script>
+// Mostra o número de acessos da matéria via contador PÚBLICO do GoatCounter.
+// Requer "Allow adding visitor counts on your website" habilitado nas configurações do GoatCounter.
+(async () => {
+  try {
+    const path = window.location.pathname;
+    const res = await fetch(`https://doright.goatcounter.com/counter/${encodeURIComponent(path)}.json`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const total = data.count_unique || data.count || '0';
+    document.getElementById('view-count').textContent = total;
+    document.getElementById('post-views').style.display = 'inline-flex';
+  } catch (err) {
+    console.log('Contador indisponível:', err.message);
+  }
+})();
+</script>

@@ -1,0 +1,18 @@
+title: "Do Right"
+description: "Treino online e qualidade de vida para brasileiros que moram fora do Brasil."
+url: "https://doright.fit"
+baseurl: ""
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - .github/
+  - DORIGHT_PROJECT.md
+
+permalink: /blog/:year/:month/:day/:title/
+
+# RSS feed (jekyll-feed) — gera /feed.xml, usado para automação (Instagram/LinkedIn via Make)
+plugins:
+  - jekyll-feed

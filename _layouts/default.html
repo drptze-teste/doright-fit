@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ page.title }} · Do Right</title>
+<meta name="description" content="{{ page.description | default: site.description }}" />
+{% feed_meta %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#060912;
+    --dark:#0b0f1e;
+    --card:#0f1528;
+    --border:#1e2640;
+    --white:#eef1f8;
+    --off-white:#9aa3c0;
+    --accent:#4f8ef7;
+    --accent-bright:#7aaeff;
+    --accent-dim:#2d6de0;
+    --gray:#4a5270;
+    --line:rgba(238,241,248,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--black);
+    color:var(--white);
+    line-height:1.6;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.15;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* TOPBAR */
+  .topbar{
+    background:rgba(6,9,18,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    padding:16px 0;
+    position:sticky;top:0;z-index:50;
+  }
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand-logo{display:flex;align-items:center;gap:12px}
+  .brand-logo-mark{
+    font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;
+    color:var(--white);line-height:1;
+  }
+  .brand-logo-mark span{color:var(--accent)}
+  .nav-links{display:flex;gap:26px;font-size:14px;font-weight:500;color:var(--off-white)}
+  .nav-links a:hover{color:var(--accent-bright)}
+  .nav-links a.active{color:var(--accent-bright)}
+
+  /* FOOTER */
+  .site-footer{
+    margin-top:96px;
+    padding:48px 0;
+    border-top:1px solid var(--border);
+    background:var(--dark);
+    color:var(--off-white);
+  }
+  .site-footer-inner{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+  .site-footer p{font-size:13px;line-height:1.7}
+  .site-footer a{color:var(--accent-bright);text-decoration:none}
+  .site-footer a:hover{text-decoration:underline}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;color:#fff}
+  .footer-brand span{color:var(--accent)}
+  .site-views{
+    display:none;align-items:center;gap:6px;
+    font-size:13px;color:var(--off-white);font-weight:500;
+    background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.25);
+    border-radius:100px;padding:6px 14px;
+  }
+  .site-views svg{width:15px;height:15px;stroke:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="wrap topbar-inner">
+    <a href="{{ site.baseurl }}/" class="brand-logo">
+      <span class="brand-logo-mark">DO<span>·</span>RIGHT</span>
+    </a>
+    <div class="nav-links">
+      <a href="{{ site.baseurl }}/">Início</a>
+      <a href="{{ site.baseurl }}/blog/" class="{% if page.layout == 'post' or page.url contains '/blog' %}active{% endif %}">Blog</a>
+      <a href="https://www.instagram.com/doright.fit" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+</nav>
+
+{{ content }}
+
+<footer class="site-footer">
+  <div class="wrap site-footer-inner">
+    <p class="footer-brand">DO<span>·</span>RIGHT</p>
+    <p>Treino online para brasileiros no mundo · Atendimento em português e inglês<br>
+    <a href="{{ site.baseurl }}/">doright.fit</a> · <a href="https://www.instagram.com/doright.fit" target="_blank" rel="noopener">@doright.fit</a></p>
+    <p>© {{ 'now' | date: "%Y" }} Do Right Physical Trainers</p>
+    <span class="site-views" id="site-views">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span id="site-views-count">0</span> visitas no site
+    </span>
+  </div>
+</footer>
+
+<!-- Contador total de visitas do site (endpoint público GoatCounter) -->
+<script>
+(async () => {
+  try {
+    const res = await fetch('https://doright.goatcounter.com/counter/TOTAL.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const total = data.count_unique || data.count;
+    if (total) {
+      document.getElementById('site-views-count').textContent = total;
+      document.getElementById('site-views').style.display = 'inline-flex';
+    }
+  } catch (err) {
+    console.log('Contador do site indisponível:', err.message);
+  }
+})();
+</script>
+
+<!-- GoatCounter — contagem de acessos (privacidade: sem cookies, sem IP armazenado) -->
+<!-- Painel: https://doright.goatcounter.com  ·  conta gratuita em goatcounter.com com o código "doright" -->
+<script data-goatcounter="https://doright.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+
+</body>
+</html>

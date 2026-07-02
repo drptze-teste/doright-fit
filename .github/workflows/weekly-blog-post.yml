@@ -1,0 +1,56 @@
+name: Post Automático Semanal
+
+on:
+  schedule:
+    - cron: '0 18 * * 3'   # toda quarta-feira às 15h de Brasília (18h UTC) — tarde, após as 14h
+  workflow_dispatch:         # permite rodar manualmente pelo GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  gerar-post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm install @google/generative-ai google-trends-api
+        working-directory: .github/scripts
+
+      - name: Gerar post com Gemini + Google Trends
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node .github/scripts/gerar-post.js
+
+      - name: Commit e push do post
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$NOME_ARQUIVO"
+          git commit -m "[bot] Post automático - semana $SEMANA — $TEMA"
+          git push
+
+      - name: Avisar no WhatsApp (CallMeBot)
+        if: success()
+        env:
+          PHONE:  ${{ secrets.WHATSAPP_PHONE }}
+          APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
+        run: |
+          if [ -z "$PHONE" ] || [ -z "$APIKEY" ]; then
+            echo "WHATSAPP_PHONE ou CALLMEBOT_APIKEY não configurados — pulando aviso."
+            exit 0
+          fi
+          MENSAGEM="✅ Novo post no Blog Do Right: $TITULO — $POST_URL"
+          curl -s -G "https://api.callmebot.com/whatsapp.php" \
+            --data-urlencode "phone=$PHONE" \
+            --data-urlencode "text=$MENSAGEM" \
+            --data-urlencode "apikey=$APIKEY"
+          echo "Aviso de WhatsApp enviado."

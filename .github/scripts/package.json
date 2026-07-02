@@ -1,0 +1,10 @@
+{
+  "name": "doright-blog-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gerador automático de posts do blog Do Right (Gemini + Google Trends)",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "google-trends-api": "^4.9.2"
+  }
+}

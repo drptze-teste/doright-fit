@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Blog Do Right</title>
+  <style>
+    :root{
+      --black:#060912;--card:#0f1528;--border:#1e2640;
+      --white:#eef1f8;--off-white:#9aa3c0;--accent:#4f8ef7;--accent-dim:#2d6de0;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+      background:var(--black);color:var(--white);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      padding:24px;
+    }
+    .card{
+      max-width:540px;width:100%;background:var(--card);border:1px solid var(--border);
+      border-radius:18px;padding:36px 32px;box-shadow:0 18px 50px rgba(0,0,0,.5);
+    }
+    .card-label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    h1{font-size:1.5rem;margin:0 0 6px;color:var(--white)}
+    p.sub{color:var(--off-white);margin:0 0 24px;line-height:1.5}
+    .btn{display:block;width:100%;text-align:center;text-decoration:none;font-weight:600;padding:15px 18px;border-radius:12px;margin-bottom:12px;transition:transform .08s ease,opacity .15s ease}
+    .btn:active{transform:scale(.985)}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-dim)}
+    .btn-secondary{background:rgba(238,241,248,.06);color:var(--white);border:1px solid var(--border)}
+    .btn-secondary:hover{background:rgba(238,241,248,.1)}
+    .hint{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);font-size:.9rem;color:var(--off-white);line-height:1.55}
+    .hint code{background:rgba(238,241,248,.06);padding:2px 6px;border-radius:6px;font-size:.85em}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p class="card-label">Do Right</p>
+    <h1>Painel do Blog</h1>
+    <p class="sub">Crie e edite posts direto no GitHub — sem login extra. O artigo publica automaticamente em poucos minutos.</p>
+
+    <a class="btn btn-primary" id="novo" href="#" target="_blank" rel="noopener">✍️ Escrever novo post</a>
+    <a class="btn btn-secondary" href="https://github.com/drptze-teste/doright-fit/tree/main/_posts" target="_blank" rel="noopener">📂 Ver / editar posts existentes</a>
+
+    <div class="hint">
+      <strong>Como funciona:</strong> ao clicar em "Escrever novo post", o GitHub abre um arquivo já com o modelo pronto. Preencha o título, o resumo e o texto, depois clique em <code>Commit changes</code>. O blog atualiza sozinho em 1–2 minutos.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const hoje = new Date();
+      const p = (n) => String(n).padStart(2, '0');
+      const data = `${hoje.getFullYear()}-${p(hoje.getMonth() + 1)}-${p(hoje.getDate())}`;
+      const nomeArquivo = `_posts/${data}-novo-post.md`;
+
+      const modelo = `---
+layout: post
+title: "Título do post aqui"
+date: ${data} 15:00:00 -0300
+excerpt: "Resumo de uma linha que aparece no card da listagem."
+author: "Equipe Do Right"
+cover: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&q=80"
+---
+
+Escreva a introdução aqui (2-3 linhas).
+
+## Primeiro subtítulo
+
+Texto do primeiro tópico.
+
+## Segundo subtítulo
+
+Texto do segundo tópico.
+
+## Conclusão
+
+Parágrafo final convidando para treinar com a Do Right.
+`;
+
+      const url = 'https://github.com/drptze-teste/doright-fit/new/main'
+        + '?filename=' + encodeURIComponent(nomeArquivo)
+        + '&value=' + encodeURIComponent(modelo);
+
+      document.getElementById('novo').setAttribute('href', url);
+    })();
+  </script>
+</body>
+</html>
