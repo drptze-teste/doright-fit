@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do Right — Treino Online para Brasileiros no Mundo</title>
+<meta name="description" content="Treinamento personalizado online para brasileiros expatriados. Personal trainer brasileiro, atendimento em português e inglês.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #060912;
+    --dark: #0b0f1e;
+    --card: #0f1528;
+    --border: #1e2640;
+    --white: #eef1f8;
+    --off-white: #9aa3c0;
+    --accent: #4f8ef7;
+    --accent-bright: #7aaeff;
+    --accent-dim: #2d6de0;
+    --gray: #4a5270;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 4vw;
+    background: rgba(6,9,18,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo-svg { height: 42px; width: auto; }
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .lang-toggle { display: flex; border: 1px solid var(--border); overflow: hidden; }
+  .lang-btn {
+    background: none; border: none; color: var(--off-white);
+    font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.1em; padding: 0.4rem 0.9rem; cursor: pointer; transition: all 0.2s;
+  }
+  .lang-btn.active { background: var(--accent); color: #fff; }
+  .lang-btn:not(.active):hover { background: var(--border); color: var(--white); }
+  nav a.cta-nav {
+    background: var(--accent); color: #fff; font-weight: 500;
+    font-size: 0.85rem; letter-spacing: 0.05em; padding: 0.55rem 1.4rem;
+    text-decoration: none; transition: background 0.2s;
+  }
+  nav a.cta-nav:hover { background: var(--accent-dim); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; padding: 8rem 4vw 4rem; gap: 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 75% 50%, rgba(79,142,247,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 5% 80%, rgba(79,142,247,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-text { position: relative; z-index: 2; }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    line-height: 0.95; letter-spacing: 0.02em; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero h1 em { font-family: 'DM Serif Display', serif; font-style: italic; color: var(--accent-bright); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--off-white); max-width: 440px; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff; font-weight: 500; font-size: 0.95rem;
+    padding: 1rem 2rem; text-decoration: none; display: inline-block;
+    transition: all 0.25s; letter-spacing: 0.03em;
+  }
+  .btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,142,247,0.35); }
+  .btn-ghost {
+    border: 1px solid var(--border); color: var(--off-white); font-size: 0.95rem;
+    padding: 1rem 2rem; text-decoration: none; display: inline-block; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-image { position: relative; z-index: 2; opacity: 0; animation: fadeIn 1.2s 0.5s forwards; }
+  .hero-image img {
+    width: 100%; height: 520px; object-fit: cover; filter: grayscale(15%) contrast(1.05);
+  }
+  .hero-image::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(79,142,247,0.12) 0%, transparent 60%);
+    z-index: 1; pointer-events: none;
+  }
+  .hero-image::after {
+    content: ''; position: absolute; top: -8px; right: -8px; bottom: 8px; left: 8px;
+    border: 1px solid rgba(79,142,247,0.3); pointer-events: none;
+  }
+  .hero-badge {
+    position: absolute; bottom: -1.5rem; left: -1.5rem;
+    background: var(--accent); color: #fff; padding: 1rem 1.5rem;
+    font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.1em;
+    z-index: 3; box-shadow: 0 8px 24px rgba(79,142,247,0.4);
+  }
+
+  /* CITIES STRIP */
+  .cities-strip {
+    background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 1rem 4vw; display: flex; gap: 2rem; align-items: center; overflow-x: auto;
+  }
+  .cities-strip::-webkit-scrollbar { display: none; }
+  .cities-strip span { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); white-space: nowrap; }
+  .cities-strip span.active { color: var(--accent); }
+
+  /* SECTIONS */
+  section { padding: 7rem 4vw; }
+  .section-label { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; letter-spacing: 0.02em; margin-bottom: 1.5rem; }
+  h2 em { font-family: 'DM Serif Display', serif; font-style: italic; color: var(--accent-bright); }
+
+  /* CITIES MOSAIC */
+  .cities-mosaic {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 260px 260px; gap: 6px; margin-top: 2.5rem;
+  }
+  .city-card { position: relative; overflow: hidden; cursor: default; }
+  .city-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%) brightness(0.65); transition: all 0.4s; }
+  .city-card:hover img { filter: grayscale(10%) brightness(0.8); transform: scale(1.04); }
+  .city-card .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(6,9,18,0.92) 0%, rgba(6,9,18,0.2) 60%, transparent 100%);
+    transition: background 0.3s;
+  }
+  .city-card:hover .overlay { background: linear-gradient(to top, rgba(6,9,18,0.85) 0%, rgba(6,9,18,0.1) 50%, transparent 100%); }
+  .city-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 1.8rem; z-index: 2; }
+  .city-flag { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 0.4rem; display: block; }
+  .city-name {
+    font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8); display: block;
+  }
+  .city-card:first-child .city-name { font-size: 3rem; }
+  .city-card:not(:first-child) .city-name { font-size: 1.8rem; }
+  .city-card:first-child { grid-row: 1 / 3; }
+  .city-accent {
+    position: absolute; bottom: 0; left: 0; width: 0; height: 3px;
+    background: var(--accent); transition: width 0.4s;
+  }
+  .city-card:hover .city-accent { width: 100%; }
+
+  /* FOR WHO */
+  .for-who { background: var(--dark); }
+  .for-who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+  .for-who-img { position: relative; }
+  .for-who-img img { width: 100%; height: 500px; object-fit: cover; filter: grayscale(20%); position: relative; z-index: 1; }
+  .for-who-img::before {
+    content: ''; position: absolute; top: -1rem; left: -1rem; width: 60%; height: 60%;
+    border: 1px solid rgba(79,142,247,0.4); z-index: 0;
+  }
+  .for-who-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(79,142,247,0.1) 0%, transparent 60%);
+    z-index: 2; pointer-events: none;
+  }
+  .pain-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .pain-list li {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.3rem 1.5rem; border: 1px solid var(--border);
+    background: var(--card); transition: all 0.25s;
+  }
+  .pain-list li:hover { border-color: var(--accent); background: rgba(79,142,247,0.05); transform: translateX(4px); }
+  .pain-icon { color: var(--accent); font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .pain-list strong { display: block; font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .pain-list p { font-size: 0.85rem; color: var(--off-white); }
+
+  /* INCLUDED */
+  .included-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border); margin-top: 3rem; border: 1px solid var(--border);
+  }
+  .included-item {
+    background: var(--dark); padding: 2.5rem 2rem; transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .included-item::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent); transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+  }
+  .included-item:hover::before { transform: scaleX(1); }
+  .included-item:hover { background: var(--card); }
+  .included-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--accent); opacity: 0.2; line-height: 1; margin-bottom: 1rem; }
+  .included-item h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .included-item p { font-size: 0.85rem; color: var(--off-white); }
+
+  /* PLANS */
+  .plans { background: var(--dark); }
+  .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .plan {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 2.5rem 2rem; display: flex; flex-direction: column;
+    position: relative; transition: all 0.25s;
+  }
+  .plan:hover { border-color: rgba(79,142,247,0.4); }
+  .plan.featured {
+    background: var(--black); border: 1px solid var(--accent);
+    box-shadow: 0 0 40px rgba(79,142,247,0.12), inset 0 0 40px rgba(79,142,247,0.03);
+  }
+  .plan-badge {
+    position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #fff; font-size: 0.65rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase; padding: 0.3rem 1rem; white-space: nowrap;
+  }
+  .plan-name { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1rem; }
+  .plan-price { font-family: 'Bebas Neue', sans-serif; font-size: 3.8rem; line-height: 1; margin-bottom: 0.3rem; }
+  .plan-price sup { font-size: 1.5rem; vertical-align: super; color: var(--accent); }
+  .plan-period { font-size: 0.8rem; color: var(--gray); margin-bottom: 2rem; }
+  .plan-features { list-style: none; flex: 1; margin-bottom: 2rem; }
+  .plan-features li {
+    font-size: 0.85rem; color: var(--off-white); padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border); display: flex; gap: 0.7rem; align-items: flex-start;
+  }
+  .plan-features li::before { content: '✓'; color: var(--accent); flex-shrink: 0; font-weight: 500; }
+  .plan-features li.no { color: var(--gray); }
+  .plan-features li.no::before { content: '–'; color: var(--gray); }
+  .plan .btn-primary, .plan .btn-ghost { width: 100%; text-align: center; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); margin-top: 3rem; }
+  .step { padding: 2.5rem 2rem; border-right: 1px solid var(--border); transition: background 0.25s; }
+  .step:last-child { border-right: none; }
+  .step:hover { background: var(--card); }
+  .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--accent); opacity: 0.12; line-height: 1; margin-bottom: 1.5rem; }
+  .step h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .step p { font-size: 0.85rem; color: var(--off-white); }
+
+  /* TESTIMONIALS */
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .testi {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 2rem; position: relative; transition: all 0.25s;
+  }
+  .testi:hover { border-color: rgba(79,142,247,0.35); transform: translateY(-4px); }
+  .testi::before {
+    content: '"'; font-family: 'DM Serif Display', serif; font-size: 5rem;
+    color: var(--accent); opacity: 0.15; position: absolute; top: 0.5rem; left: 1.5rem; line-height: 1;
+  }
+  .testi p { font-size: 0.9rem; color: var(--off-white); margin-bottom: 1.5rem; font-style: italic; padding-top: 1rem; }
+  .testi-author { font-size: 0.85rem; font-weight: 500; }
+  .testi-location { font-size: 0.75rem; color: var(--accent); margin-top: 0.2rem; }
+
+  /* FINAL CTA */
+  .final-cta {
+    text-align: center; padding: 9rem 4vw; position: relative; overflow: hidden; background: var(--dark);
+  }
+  .final-cta::before {
+    content: 'DO RIGHT'; position: absolute; font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(8rem, 20vw, 18rem); color: rgba(79,142,247,0.04);
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    white-space: nowrap; pointer-events: none; letter-spacing: 0.1em;
+  }
+  .final-cta > * { position: relative; z-index: 2; }
+  .final-cta h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 1rem; }
+  .final-cta p { color: var(--off-white); max-width: 520px; margin: 0 auto 2.5rem; }
+  .final-cta .btn-primary { font-size: 1.05rem; padding: 1.2rem 3rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); border-top: 1px solid var(--border);
+    padding: 2.5rem 4vw; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  footer p { font-size: 0.8rem; color: var(--gray); }
+  footer a { color: var(--gray); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+  footer a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 7rem; gap: 2rem; }
+    .hero-image { order: -1; }
+    .hero-image img { height: 300px; }
+    .for-who-grid { grid-template-columns: 1fr; }
+    .for-who-img { display: none; }
+    .included-grid { grid-template-columns: 1fr 1fr; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .step { border-bottom: 1px solid var(--border); }
+    .testi-grid { grid-template-columns: 1fr; }
+    .cities-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 200px); }
+    .city-card:first-child { grid-row: auto; grid-column: 1 / 3; }
+    footer { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 580px) {
+    .included-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    nav a.cta-nav { display: none; }
+    .cities-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 160px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#">
+    <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#7aaeff"/>
+          <stop offset="100%" style="stop-color:#4f8ef7"/>
+        </linearGradient>
+      </defs>
+      <text x="0" y="58" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="800" font-size="62" letter-spacing="2" fill="url(#g)">DO</text>
+      <rect x="118" y="12" width="2" height="50" fill="#4f8ef7" opacity="0.4"/>
+      <text x="130" y="58" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="200" font-size="62" letter-spacing="1" fill="#ffffff">RIGHT</text>
+      <text x="1" y="74" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="300" font-size="9" letter-spacing="4" fill="#4f8ef7" opacity="0.8">TRAIN ONLINE · LIVE ANYWHERE</text>
+    </svg>
+  </a>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt">PT</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+    </div>
+    <a href="#planos" class="cta-nav" data-pt="Começar agora" data-en="Get started">Começar agora</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">🌍 London · Dubai · Europe · Americas</p>
+    <h1 data-pt="Treino que <em>funciona</em><br>onde você estiver" data-en="Train right,<br>wherever <em>life</em><br>took you.">
+      Treino que <em>funciona</em><br>onde você estiver
+    </h1>
+    <p class="hero-sub"
+      data-pt="Personal trainer brasileiro, atendimento em português, programa alimentar e videochamada mensal. Para quem vive fora e não quer perder a saúde no caminho."
+      data-en="Brazilian coaches, global reach. Your training, your nutrition, your accountability — in your language, at your timezone. No generic apps. Real results.">
+      Personal trainer brasileiro, atendimento em português, programa alimentar e videochamada mensal. Para quem vive fora e não quer perder a saúde no caminho.
+    </p>
+    <div class="hero-actions">
+      <a href="#planos" class="btn-primary" data-pt="Ver planos →" data-en="See plans →">Ver planos →</a>
+      <a href="#como-funciona" class="btn-ghost" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=900&q=85&fit=crop&auto=format" alt="Online training" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=85&fit=crop&auto=format'">
+    <div class="hero-badge" data-pt="🇧🇷 Em português" data-en="🇧🇷 Brazilian coaches">🇧🇷 Em português</div>
+  </div>
+</section>
+
+<!-- CITIES STRIP -->
+<div class="cities-strip">
+  <span data-pt="Atendemos em:" data-en="We coach in:">Atendemos em:</span>
+  <span class="active">● Londres</span>
+  <span class="active">● Dubai</span>
+  <span>● Frankfurt</span>
+  <span>● Zurique</span>
+  <span>● Munique</span>
+  <span>● Amsterdam</span>
+  <span>● Nova York</span>
+  <span>● Miami</span>
+  <span>● Tóquio</span>
+  <span data-pt="● E qualquer lugar do mundo" data-en="● And anywhere in the world">● E qualquer lugar do mundo</span>
+</div>
+
+<!-- CITIES MOSAIC -->
+<section style="padding: 5rem 4vw; background: var(--black);">
+  <p class="section-label" data-pt="Onde estão nossos clientes" data-en="Where our clients are">Onde estão nossos clientes</p>
+  <h2 data-pt="Do Brasil para o <em>mundo</em>." data-en="From Brazil to the <em>world</em>.">Do Brasil para o <em>mundo</em>.</h2>
+
+  <div class="cities-mosaic">
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=800&q=85&fit=crop&auto=format" alt="London" onerror="this.style.background='#0f1528'">
+      <div class="overlay"></div>
+      <div class="city-info">
+        <span class="city-flag">🇬🇧 Reino Unido</span>
+        <span class="city-name">Londres</span>
+      </div>
+      <div class="city-accent"></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&q=85&fit=crop&auto=format" alt="Dubai" onerror="this.style.background='#0f1528'">
+      <div class="overlay"></div>
+      <div class="city-info">
+        <span class="city-flag">🇦🇪 UAE</span>
+        <span class="city-name">Dubai</span>
+      </div>
+      <div class="city-accent"></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&q=85&fit=crop&auto=format" alt="Frankfurt" onerror="this.style.background='#0f1528'">
+      <div class="overlay"></div>
+      <div class="city-info">
+        <span class="city-flag">🇩🇪 Alemanha</span>
+        <span class="city-name">Frankfurt</span>
+      </div>
+      <div class="city-accent"></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=500&q=85&fit=crop&auto=format" alt="Zurique" onerror="this.style.background='#0f1528'">
+      <div class="overlay"></div>
+      <div class="city-info">
+        <span class="city-flag">🇨🇭 Suíça</span>
+        <span class="city-name">Zurique</span>
+      </div>
+      <div class="city-accent"></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=500&q=85&fit=crop&auto=format" alt="Nova York" onerror="this.style.background='#0f1528'">
+      <div class="overlay"></div>
+      <div class="city-info">
+        <span class="city-flag">🇺🇸 EUA</span>
+        <span class="city-name">Nova York</span>
+      </div>
+      <div class="city-accent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="for-who">
+  <p class="section-label" data-pt="Para quem é" data-en="Who it's for">Para quem é</p>
+  <h2 data-pt="Você saiu do Brasil.<br>Sua saúde <em>não precisa</em><br>ficar para trás." data-en="You left home.<br>Your health <em>doesn't have</em><br>to stay behind.">
+    Você saiu do Brasil.<br>Sua saúde <em>não precisa</em><br>ficar para trás.
+  </h2>
+  <div class="for-who-grid">
+    <div class="for-who-img">
+      <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=700&q=85&fit=crop&auto=format" alt="Expatriate training" onerror="this.src='https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=700&q=85&fit=crop&auto=format'">
+    </div>
+    <ul class="pain-list">
+      <li>
+        <span class="pain-icon">🏙️</span>
+        <div>
+          <strong data-pt="Perdeu a rotina de academia" data-en="Lost your gym routine">Perdeu a rotina de academia</strong>
+          <p data-pt="Vida nova, cidade nova — e a academia ficou no Brasil. A gente recria essa rotina contigo, no seu horário." data-en="New city, new life — and your old routine stayed behind. We rebuild it with you, on your schedule.">Vida nova, cidade nova — e a academia ficou no Brasil. A gente recria essa rotina contigo, no seu horário.</p>
+        </div>
+      </li>
+      <li>
+        <span class="pain-icon">🍽️</span>
+        <div>
+          <strong data-pt="Não sabe adaptar a alimentação" data-en="Struggling to eat well abroad">Não sabe adaptar a alimentação</strong>
+          <p data-pt="Alimentos diferentes, rótulos em outro idioma, sem tempo para cozinhar. Nosso programa se adapta ao país onde você está." data-en="Different foods, foreign labels, no time to cook. Our nutrition plan adapts to whatever country you're in.">Alimentos diferentes, rótulos em outro idioma, sem tempo para cozinhar. Nosso programa se adapta ao país onde você está.</p>
+        </div>
+      </li>
+      <li>
+        <span class="pain-icon">⏰</span>
+        <div>
+          <strong data-pt="Fuso horário e agenda complicam tudo" data-en="Timezone and schedule make it harder">Fuso horário e agenda complicam tudo</strong>
+          <p data-pt="Atendimento flexível, agenda online, sem deslocamento. Treina no apartamento, no hotel ou na academia — onde der." data-en="Flexible scheduling, online booking, no commute. Train at home, at the hotel, or at the gym — wherever works.">Atendimento flexível, agenda online, sem deslocamento. Treina no apartamento, no hotel ou na academia — onde der.</p>
+        </div>
+      </li>
+      <li>
+        <span class="pain-icon">🤝</span>
+        <div>
+          <strong data-pt="Quer alguém de confiança" data-en="You want someone you can trust">Quer alguém de confiança</strong>
+          <p data-pt="Não um app genérico. Um profissional brasileiro que entende sua vida, sua cultura — e fala sua língua." data-en="Not a generic app. A real coach who understands your background, your culture, and speaks your language.">Não um app genérico. Um profissional brasileiro que entende sua vida, sua cultura — e fala sua língua.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section>
+  <p class="section-label" data-pt="O que está incluído" data-en="What's included">O que está incluído</p>
+  <h2 data-pt="Tudo que você precisa.<br><em>Nada</em> que não precisa." data-en="Everything you need.<br><em>Nothing</em> you don't.">Tudo que você precisa.<br><em>Nada</em> que não precisa.</h2>
+  <div class="included-grid">
+    <div class="included-item">
+      <div class="included-num">01</div>
+      <h3 data-pt="App de Treinos" data-en="Training App">App de Treinos</h3>
+      <p data-pt="Treinos completos com vídeo de cada exercício, periodização e progressão automática." data-en="Full workout programs with exercise videos, periodization and automatic progression tracking.">Treinos completos com vídeo de cada exercício, periodização e progressão automática.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-num">02</div>
+      <h3 data-pt="Programa Alimentar" data-en="Nutrition Plan">Programa Alimentar</h3>
+      <p data-pt="Plano nutricional adaptado aos alimentos disponíveis no seu país. Sem ingredientes impossíveis." data-en="Nutrition plan adapted to foods available in your country. No impossible-to-find ingredients.">Plano nutricional adaptado aos alimentos disponíveis no seu país. Sem ingredientes impossíveis.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-num">03</div>
+      <h3 data-pt="Videochamada Mensal" data-en="Monthly Video Call">Videochamada Mensal</h3>
+      <p data-pt="Check-in com seu professor e/ou nutricionista. Ajustes, dúvidas, progresso — no seu idioma." data-en="Check-in with your coach and/or nutritionist. Adjustments, questions, progress — in your language.">Check-in com seu professor e/ou nutricionista. Ajustes, dúvidas, progresso — no seu idioma.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-num">04</div>
+      <h3 data-pt="Resposta Ativa" data-en="Active Support">Resposta Ativa</h3>
+      <p data-pt="Seu professor responde. De verdade. Sem chatbot, sem demora de semanas." data-en="Your coach actually replies. No bots, no waiting weeks for an answer.">Seu professor responde. De verdade. Sem chatbot, sem demora de semanas.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-num">05</div>
+      <h3 data-pt="Agenda Online" data-en="Online Scheduling">Agenda Online</h3>
+      <p data-pt="Marque sua videochamada quando quiser, fuso horário automático, sem ligações ou e-mails." data-en="Book your video call anytime, automatic timezone detection, no phone calls needed.">Marque sua videochamada quando quiser, fuso horário automático, sem ligações ou e-mails.</p>
+    </div>
+    <div class="included-item">
+      <div class="included-num">06</div>
+      <h3 data-pt="Pagamento em Moeda Local" data-en="Pay in Your Currency">Pagamento em Moeda Local</h3>
+      <p data-pt="Cobrança em USD, EUR ou GBP direto no cartão. Sem transferência internacional, sem complicação." data-en="Billed in USD, EUR or GBP directly to your card. No international transfers, no hassle.">Cobrança em USD, EUR ou GBP direto no cartão. Sem transferência internacional, sem complicação.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="plans" id="planos">
+  <p class="section-label" data-pt="Planos" data-en="Plans">Planos</p>
+  <h2 data-pt="Escolha o seu <em>nível</em> de suporte." data-en="Choose your <em>level</em> of support.">Escolha o seu <em>nível</em> de suporte.</h2>
+  <div class="plans-grid">
+    <div class="plan">
+      <p class="plan-name">Basic</p>
+      <div class="plan-price"><sup>$</sup>79</div>
+      <p class="plan-period" data-pt="por mês · cobrado mensalmente" data-en="per month · billed monthly">por mês · cobrado mensalmente</p>
+      <ul class="plan-features">
+        <li data-pt="App de treinos completo" data-en="Full training app">App de treinos completo</li>
+        <li data-pt="Vídeo de cada exercício" data-en="Exercise video library">Vídeo de cada exercício</li>
+        <li data-pt="Programa alimentar básico" data-en="Basic nutrition plan">Programa alimentar básico</li>
+        <li data-pt="Resposta em até 48h" data-en="Response within 48h">Resposta em até 48h</li>
+        <li class="no" data-pt="Videochamada mensal" data-en="Monthly video call">Videochamada mensal</li>
+        <li class="no" data-pt="Ajuste personalizado" data-en="Personalized adjustments">Ajuste personalizado</li>
+        <li class="no" data-pt="Nutricionista" data-en="Nutritionist access">Nutricionista</li>
+      </ul>
+      <a href="#" class="btn-ghost" data-pt="Começar com Basic" data-en="Start with Basic">Começar com Basic</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge" data-pt="Mais popular" data-en="Most popular">Mais popular</div>
+      <p class="plan-name">Premium</p>
+      <div class="plan-price"><sup>$</sup>147</div>
+      <p class="plan-period" data-pt="por mês · cobrado mensalmente" data-en="per month · billed monthly">por mês · cobrado mensalmente</p>
+      <ul class="plan-features">
+        <li data-pt="App de treinos completo" data-en="Full training app">App de treinos completo</li>
+        <li data-pt="Vídeo de cada exercício" data-en="Exercise video library">Vídeo de cada exercício</li>
+        <li data-pt="Programa alimentar completo" data-en="Complete nutrition plan">Programa alimentar completo</li>
+        <li data-pt="Resposta em até 24h" data-en="Response within 24h">Resposta em até 24h</li>
+        <li data-pt="1 videochamada/mês" data-en="1 video call/month">1 videochamada/mês</li>
+        <li data-pt="Ajuste mensal personalizado" data-en="Monthly personalized adjustment">Ajuste mensal personalizado</li>
+        <li class="no" data-pt="Nutricionista separado" data-en="Dedicated nutritionist">Nutricionista separado</li>
+      </ul>
+      <a href="#" class="btn-primary" data-pt="Começar com Premium" data-en="Start with Premium">Começar com Premium</a>
+    </div>
+    <div class="plan">
+      <p class="plan-name">VIP</p>
+      <div class="plan-price"><sup>$</sup>297</div>
+      <p class="plan-period" data-pt="por mês · cobrado mensalmente" data-en="per month · billed monthly">por mês · cobrado mensalmente</p>
+      <ul class="plan-features">
+        <li data-pt="App de treinos completo" data-en="Full training app">App de treinos completo</li>
+        <li data-pt="Vídeo de cada exercício" data-en="Exercise video library">Vídeo de cada exercício</li>
+        <li data-pt="Programa alimentar premium" data-en="Premium nutrition plan">Programa alimentar premium</li>
+        <li data-pt="Resposta em até 4h" data-en="Response within 4h">Resposta em até 4h</li>
+        <li data-pt="2 videochamadas/mês" data-en="2 video calls/month">2 videochamadas/mês</li>
+        <li data-pt="Revisão semanal de progresso" data-en="Weekly progress review">Revisão semanal de progresso</li>
+        <li data-pt="Nutricionista dedicado" data-en="Dedicated nutritionist">Nutricionista dedicado</li>
+      </ul>
+      <a href="#" class="btn-ghost" data-pt="Começar com VIP" data-en="Start with VIP">Começar com VIP</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="como-funciona">
+  <p class="section-label" data-pt="Como funciona" data-en="How it works">Como funciona</p>
+  <h2 data-pt="Simples como <em>deve ser</em>." data-en="Simple as it <em>should be</em>.">Simples como <em>deve ser</em>.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3 data-pt="Escolhe seu plano" data-en="Pick your plan">Escolhe seu plano</h3>
+      <p data-pt="Seleciona o nível de suporte e cadastra o cartão — em dólar, euro ou libra." data-en="Choose your support level and add your card — in USD, EUR or GBP.">Seleciona o nível de suporte e cadastra o cartão — em dólar, euro ou libra.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3 data-pt="Acessa o app" data-en="Access the app">Acessa o app</h3>
+      <p data-pt="Em minutos você já tem acesso ao seu programa de treinos e alimentar, com vídeos de tudo." data-en="Within minutes you have full access to your training and nutrition program, with videos for everything.">Em minutos você já tem acesso ao seu programa de treinos e alimentar, com vídeos de tudo.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3 data-pt="Agenda sua chamada" data-en="Book your call">Agenda sua chamada</h3>
+      <p data-pt="Pelo app, escolhe o horário da sua videochamada com professor e/ou nutricionista." data-en="Through the app, pick a time for your video call with your coach and/or nutritionist.">Pelo app, escolhe o horário da sua videochamada com professor e/ou nutricionista.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3 data-pt="Evolui todo mês" data-en="Progress every month">Evolui todo mês</h3>
+      <p data-pt="Progresso medido, treino ajustado, alimentação adaptada. Sem parar, sem estagnação." data-en="Tracked progress, adjusted training, adapted nutrition. No plateaus, no stopping.">Progresso medido, treino ajustado, alimentação adaptada. Sem parar, sem estagnação.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background: var(--dark);">
+  <p class="section-label" data-pt="Resultados" data-en="Results">Resultados</p>
+  <h2 data-pt="Brasileiros que <em>não abriram mão</em> da saúde." data-en="Brazilians who <em>refused to give up</em> on their health.">Brasileiros que <em>não abriram mão</em> da saúde.</h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p data-pt="Morei 2 anos em Frankfurt e engordei 12kg no primeiro ano. Com o Do Right perdi tudo em 8 meses sem abrir mão de nada." data-en="I lived 2 years in Frankfurt and gained 12kg in the first year. With Do Right I lost it all in 8 months without giving anything up.">Morei 2 anos em Frankfurt e engordei 12kg no primeiro ano. Com o Do Right perdi tudo em 8 meses sem abrir mão de nada.</p>
+      <div class="testi-author">Rodrigo M.</div>
+      <div class="testi-location">📍 Frankfurt, Alemanha · Plano Premium</div>
+    </div>
+    <div class="testi">
+      <p data-pt="O que me pegou foi poder falar em português. Parece bobagem mas faz toda diferença quando você já passa o dia todo falando inglês." data-en="What got me was being able to speak Portuguese. Sounds silly but it makes all the difference when you spend all day speaking English.">O que me pegou foi poder falar em português. Parece bobagem mas faz toda diferença quando você já passa o dia todo falando inglês.</p>
+      <div class="testi-author">Camila R.</div>
+      <div class="testi-location">📍 Londres, Reino Unido · Plano VIP</div>
+    </div>
+    <div class="testi">
+      <p data-pt="Dubai tem academia em todo canto mas eu ficava perdida sem orientação. O programa alimentar adaptado para o que se acha aqui foi o divisor de águas pra mim." data-en="Dubai has gyms everywhere but I was lost without guidance. The nutrition plan adapted to local supermarkets was a game changer for me.">Dubai tem academia em todo canto mas eu ficava perdida sem orientação. O programa alimentar adaptado para o que se acha aqui foi o divisor de águas pra mim.</p>
+      <div class="testi-author">Fernanda L.</div>
+      <div class="testi-location">📍 Dubai, UAE · Plano Premium</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <p class="section-label" data-pt="Comece hoje" data-en="Start today">Comece hoje</p>
+  <h2 data-pt="Pronto para <em>fazer certo</em>?" data-en="Ready to <em>do right</em>?">Pronto para <em>fazer certo</em>?</h2>
+  <p data-pt="Você já deu o passo mais difícil — sair do Brasil. Manter sua saúde onde quer que esteja é a parte mais fácil. A gente cuida disso." data-en="You already took the hardest step — leaving home. Keeping your health on track wherever you are is the easy part. We've got that covered.">Você já deu o passo mais difícil — sair do Brasil. Manter sua saúde onde quer que esteja é a parte mais fácil. A gente cuida disso.</p>
+  <a href="#planos" class="btn-primary" data-pt="Escolher meu plano →" data-en="Choose my plan →">Escolher meu plano →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <svg height="36" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80">
+    <defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#7aaeff"/><stop offset="100%" style="stop-color:#4f8ef7"/></linearGradient></defs>
+    <text x="0" y="58" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="800" font-size="62" letter-spacing="2" fill="url(#g2)">DO</text>
+    <rect x="118" y="12" width="2" height="50" fill="#4f8ef7" opacity="0.4"/>
+    <text x="130" y="58" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="200" font-size="62" letter-spacing="1" fill="#ffffff">RIGHT</text>
+  </svg>
+  <p>© 2026 Do Right · Do Right Physical Trainers · doright.fit</p>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="https://www.instagram.com/doright.fit/" target="_blank" rel="noopener">Instagram</a>
+    <a href="mailto:contato@doright.fit" data-pt="Contato" data-en="Contact">Contato</a>
+    <a href="#" data-pt="Privacidade" data-en="Privacy">Privacidade</a>
+  </div>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    document.querySelectorAll('[data-pt], [data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) el.innerHTML = val;
+    });
+  }
+</script>
+</body>
+</html>

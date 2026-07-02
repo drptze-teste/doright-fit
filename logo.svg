@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7aaeff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4f8ef7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- DO -->
+  <text x="0" y="58" 
+    font-family="'Helvetica Neue', Arial, sans-serif" 
+    font-weight="800"
+    font-size="62"
+    letter-spacing="2"
+    fill="url(#textGrad)">DO</text>
+  <!-- divider line -->
+  <rect x="118" y="12" width="2" height="50" fill="#4f8ef7" opacity="0.4"/>
+  <!-- RIGHT -->
+  <text x="130" y="58"
+    font-family="'Helvetica Neue', Arial, sans-serif"
+    font-weight="200"
+    font-size="62"
+    letter-spacing="1"
+    fill="#ffffff">RIGHT</text>
+  <!-- tagline -->
+  <text x="1" y="74"
+    font-family="'Helvetica Neue', Arial, sans-serif"
+    font-weight="300"
+    font-size="9"
+    letter-spacing="4"
+    fill="#4f8ef7"
+    opacity="0.8">TRAIN ONLINE · LIVE ANYWHERE</text>
+</svg>
