@@ -58,6 +58,14 @@
   .nav-links{display:flex;gap:26px;font-size:14px;font-weight:500;color:var(--off-white)}
   .nav-links a:hover{color:var(--accent-bright)}
   .nav-links a.active{color:var(--accent-bright)}
+  .nav-translate{
+    display:inline-flex;align-items:center;gap:5px;
+    border:1px solid var(--border);border-radius:100px;
+    padding:5px 12px;font-size:13px;font-weight:500;color:var(--off-white);
+    cursor:pointer;transition:all .2s;
+  }
+  .nav-translate:hover{border-color:var(--accent);color:var(--accent-bright)}
+  @media(max-width:600px){.nav-links{gap:16px}.nav-links a[href*="instagram"]{display:none}}
 
   /* FOOTER */
   .site-footer{
@@ -93,6 +101,7 @@
       <a href="{{ site.baseurl }}/">Início</a>
       <a href="{{ site.baseurl }}/blog/" class="{% if page.layout == 'post' or page.url contains '/blog' %}active{% endif %}">Blog</a>
       <a href="https://www.instagram.com/doright.fit" target="_blank" rel="noopener">Instagram</a>
+      <a class="nav-translate" id="btn-translate" href="#" onclick="return translateEN(event)" title="Read in English (Google Translate)">🌐 EN</a>
     </div>
   </div>
 </nav>
@@ -111,6 +120,26 @@
     </span>
   </div>
 </footer>
+
+<!-- Botão "traduzir para inglês" via proxy do Google Tradutor (mesmo mecanismo do Chrome) -->
+<script>
+function translateEN(e){
+  if(e) e.preventDefault();
+  if(location.hostname.indexOf('translate.goog') !== -1){
+    location.href = 'https://doright.fit' + location.pathname;   // já traduzido → volta ao PT
+    return false;
+  }
+  var proxy = location.hostname.replace(/-/g,'--').replace(/\./g,'-') + '.translate.goog';
+  location.href = 'https://' + proxy + location.pathname + '?_x_tr_sl=pt&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp';
+  return false;
+}
+(function(){
+  if(location.hostname.indexOf('translate.goog') !== -1){
+    var b = document.getElementById('btn-translate');
+    if(b){ b.textContent = '🇧🇷 PT'; b.title = 'Ver original em português'; }
+  }
+})();
+</script>
 
 <!-- Contador total de visitas do site (endpoint público GoatCounter) -->
 <script>
