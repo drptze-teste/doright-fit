@@ -4,7 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 // ── Datas e semana ─────────────────────────────────────────────────────────
-const hoje = new Date();
+// DATA_OVERRIDE (YYYY-MM-DD) permite gerar posts retroativos (recuperar semanas perdidas)
+const hoje = process.env.DATA_OVERRIDE
+  ? new Date(`${process.env.DATA_OVERRIDE}T12:00:00`)
+  : new Date();
 const inicioAno = new Date(hoje.getFullYear(), 0, 1);
 const semana = Math.ceil(
   ((hoje - inicioAno) / 86400000 + inicioAno.getDay() + 1) / 7

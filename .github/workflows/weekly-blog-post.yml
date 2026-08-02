@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 18 * * 3'   # toda quarta-feira às 15h de Brasília (18h UTC) — tarde, após as 14h
   workflow_dispatch:         # permite rodar manualmente pelo GitHub
+    inputs:
+      data:
+        description: 'Data retroativa YYYY-MM-DD (vazio = hoje). Usado p/ recuperar semanas perdidas.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -28,6 +33,7 @@ jobs:
       - name: Gerar post com Gemini + Google Trends
         env:
           GEMINI_API_KEY: ${{ secrets.CHAVE_DORIGHT_BLOG }}
+          DATA_OVERRIDE: ${{ github.event.inputs.data }}
         run: node .github/scripts/gerar-post.js
 
       - name: Commit e push do post
